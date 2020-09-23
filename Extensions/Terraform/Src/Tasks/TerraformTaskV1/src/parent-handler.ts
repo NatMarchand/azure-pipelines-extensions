@@ -2,6 +2,7 @@ import { BaseTerraformCommandHandler } from './base-terraform-command-handler';
 import { TerraformCommandHandlerAzureRM } from './azure-terraform-command-handler';
 import { TerraformCommandHandlerAWS } from './aws-terraform-command-handler';
 import { TerraformCommandHandlerGCP } from './gcp-terraform-command-handler';
+import { TerraformCommandHandlerRemote } from './remote-terraform-command-handler';
 
 export interface IParentCommandHandler {
     execute(providerName: string, command: string): Promise<number>;
@@ -12,17 +13,24 @@ export class ParentCommandHandler implements IParentCommandHandler {
         // Create corresponding command handler according to provider name
         let provider: BaseTerraformCommandHandler;
 
-        switch(providerName) {
+        switch (providerName) {
             case "azurerm":
                 provider = new TerraformCommandHandlerAzureRM();
                 break;
-            
+
             case "aws":
                 provider = new TerraformCommandHandlerAWS();
                 break;
-            
+
             case "gcp":
                 provider = new TerraformCommandHandlerGCP();
+                break;
+
+            case "remote":
+                if (command != "init") {
+                    throw new Error("Only init command is supported for Remote provider");
+                }
+                provider = new TerraformCommandHandlerRemote();
                 break;
         }
 

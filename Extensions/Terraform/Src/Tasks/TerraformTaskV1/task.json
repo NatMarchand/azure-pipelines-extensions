@@ -40,6 +40,12 @@
             "displayName": "Google Cloud Platform(GCP) backend configuration",
             "isExpanded": true,
             "visibleRule": "provider = gcp && command = init"
+        },
+        {
+            "name": "backendRemote",
+            "displayName": "Terraform Enterprise backend configuration",
+            "isExpanded": true,
+            "visibleRule": "provider = remote && command = init"
         }
     ],
     "inputs": [{
@@ -52,7 +58,8 @@
             "options": {
                 "azurerm": "azurerm",
                 "aws": "aws",
-                "gcp": "gcp"
+                "gcp": "gcp",
+                "remote": "remote"
             },
             "properties": {
                 "EditableOptions": "False"
@@ -217,6 +224,23 @@
             "required": false,
             "helpMarkDown": "The relative path to the state file inside the GCP bucket. For example, if you give the input as 'terraform', then the state file, named default.tfstate, will be stored inside an object called terraform.",
             "groupName": "backendGCP"
+        },
+        {
+            "name":"backendServiceRemote",
+            "type": "connectedService:TerraformEnterpriseEndpoint",
+            "label": "Terraform Enterprise connection",
+            "required": true,
+            "helpMarkDown": "Terraform Enterprise connection for the terraform backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup a Terraform Enterprise service connection using the 'Add' or 'Manage' button.",
+            "groupName": "backendRemote"
+        },
+        {
+            "name": "backendRemoteWorkspace",
+            "type": "string",
+            "label": "Workspace",
+            "required": true,
+            "helpMarkDown": "The workspace to use.",
+            "defaultValue": "default",
+            "groupName": "backendRemote"
         }
     ],
     "dataSourceBindings": [
